@@ -19,6 +19,7 @@ import android.widget.Toast;
 import cn.eoe.app.R;
 import cn.eoe.app.biz.UserDao;
 import cn.eoe.app.https.HttpUtils;
+import cn.eoe.app.https.NetWorkHelper;
 import cn.eoe.app.ui.base.BaseActivity;
 import cn.eoe.app.utils.IntentUtil;
 
@@ -88,19 +89,29 @@ public class UserLoginActivity extends BaseActivity implements OnClickListener {
                 finish();
                 break;
             case R.id.user_login_bind:
-                String key = editKey.getText().toString().trim();
-                if (TextUtils.isEmpty(key)) {
-                    Toast.makeText(this, R.string.user_login_enter_key, Toast.LENGTH_SHORT).show();
-                    break;
-                }
-                new LoginAsyncTask().execute();
+            	loginBind();
                 break;
             case R.id.scan_user_key:
                 startActivityForResult(new Intent(this, CaptureActivity.class), GET_CODE);
                 break;
         }
     }
-
+    /**
+     * 绑定密钥登陆
+     * @author com360
+     */
+    private void loginBind(){
+    	String key = editKey.getText().toString().trim();
+        if (TextUtils.isEmpty(key)) {
+            Toast.makeText(this, R.string.user_login_enter_key, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!NetWorkHelper.checkNetState(this)){
+        	showLongToast(getResources().getString(R.string.httpisNull));
+        	return ;
+        }
+        new LoginAsyncTask().execute();
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // 当前只有一个返回值
@@ -112,7 +123,8 @@ public class UserLoginActivity extends BaseActivity implements OnClickListener {
             }
 
             editKey.setText(result);
-            // 可以直接执行绑定
+            //TODO 可以直接执行绑定
+            loginBind();
         }
     }
 
@@ -128,10 +140,10 @@ public class UserLoginActivity extends BaseActivity implements OnClickListener {
         @Override
         protected Boolean doInBackground(String... params) {
             // TODO Auto-generated method stub
-            if (!HttpUtils.isNetworkAvailable(UserLoginActivity.this)) {
-                showLongToast(getResources().getString(R.string.httpisNull));
-                return false;
-            }
+//            if (!HttpUtils.isNetworkAvailable(UserLoginActivity.this)) {
+//                showLongToast(getResources().getString(R.string.httpisNull));
+//                return false;
+//            }
             try {
                 return mUserDao.mapperJson(editKey.getText().toString()) != null ? true
                         : false;

@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cn.eoe.app"
-    android:versionCode="7"
-    android:versionName="1.0.1" >
+    android:versionCode="110"
+    android:versionName="1.1.0" >
 
     <uses-sdk
         android:minSdkVersion="5"
@@ -32,7 +32,7 @@
             android:name=".ui.SplashActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
-            android:theme="@style/splash_style"
+            android:theme="@style/Theme.splash"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -42,7 +42,7 @@
         </activity>
         <activity
             android:name=".ui.MainActivity"
-            android:hardwareAccelerated="false"
+            android:hardwareAccelerated="true"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" >
@@ -92,13 +92,8 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" >
         </activity>
-        <activity
-            android:name="com.umeng.fb.ui.SendFeedback"
-            android:windowSoftInputMode="adjustResize" />
-        <activity android:name="com.umeng.fb.ui.FeedbackConversations" />
-        <activity
-            android:name="com.umeng.fb.ui.FeedbackConversation"
-            android:configChanges="keyboard" />
+        <activity android:name="com.umeng.fb.ConversationActivity"/>
+        <activity android:name="com.umeng.fb.ContactActivity"/>
 
         <!-- zxing -->
         <activity android:name="com.google.zxing.CaptureActivity"
